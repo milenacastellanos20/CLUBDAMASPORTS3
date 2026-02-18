@@ -1,29 +1,38 @@
 package Vista.views;
-import modelo.*;
-import servicio.ClubDeportivo;
+import Servicio.ClubService;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
+import java.sql.SQLException;
 import java.util.function.Consumer;
 
 public class CancelarReservaView extends GridPane {
-    public CancelarReservaView(ClubDeportivo club) {
+    public CancelarReservaView(ClubService club) throws SQLException {
         setPadding(new Insets(12));
-        setHgap(8); setVgap(8);
+        setHgap(8);
+        setVgap(8);
 
-        ComboBox<Reserva> id = new ComboBox();
+        ComboBox<String> id = new ComboBox();
         Button cancelar = new Button("Cancelar reserva");
 
         addRow(0, new Label("Reserva"), id);
         add(cancelar, 1, 1);
 
+        //llamada al metodo del modelo para cargar las reservas en el combobox
+        id.getItems().addAll(club.cargarReservasComboBox());
+
         cancelar.setOnAction(e -> {
             try {
-         //      club.cancelarReserva(id.getValue());
+
+                if (club.cancelarReserva(id.getValue())) {
+                    showInfo("Reserva cancelada con éxito");
+                } else {
+                    showError("No ha seleccionado ninguna reserva");
+                }
 
             } catch (Exception ex) {
-                showError(ex.getMessage());
+                showError("Error desconocido al intentar eliminar la reserva de la base de datos");
             }
         });
     }
@@ -33,6 +42,7 @@ public class CancelarReservaView extends GridPane {
         a.setHeaderText("Error");
         a.showAndWait();
     }
+
     private void showInfo(String msg) {
         Alert a = new Alert(Alert.AlertType.INFORMATION, msg, ButtonType.OK);
         a.setHeaderText(null);
