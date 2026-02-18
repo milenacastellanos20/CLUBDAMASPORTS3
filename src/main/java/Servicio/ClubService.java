@@ -63,6 +63,7 @@ public class ClubService {
         if (parametrosObjetoReserva.get(1) == null) {
             em.close();
             return "Socio vacío";
+
         }
 
         //Campo ID pista
