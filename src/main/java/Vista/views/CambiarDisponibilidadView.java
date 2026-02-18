@@ -1,19 +1,19 @@
 package Vista.views;
 
-import servicio.ClubDeportivo;
-import modelo.*;
+import Servicio.ClubService;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
+import java.sql.*;
 import java.util.function.Consumer;
 
 public class CambiarDisponibilidadView extends GridPane {
-    public CambiarDisponibilidadView(ClubDeportivo club) {
+    public CambiarDisponibilidadView(ClubService club) throws SQLException {
         setPadding(new Insets(12));
         setHgap(8); setVgap(8);
 
-        ComboBox<Pista> id = new ComboBox();
+        ComboBox<String> id = new ComboBox();
         CheckBox disponible = new CheckBox("Disponible");
         Button cambiar = new Button("Aplicar");
 
@@ -21,9 +21,16 @@ public class CambiarDisponibilidadView extends GridPane {
         addRow(1, new Label("Estado"), disponible);
         add(cambiar, 1, 2);
 
+        id.getItems().addAll(club.cargarPistasCombobox());
+
         cambiar.setOnAction(e -> {
             try {
-          //     club.cambiarDisponibilidadPista(id.getText(), disponible.isSelected());
+
+                if (club.cambiarDisponibilidadPista(id.getValue(), disponible.isSelected())) {
+                    showInfo("Disponibilidad actualizada correctamente");
+                } else {
+                    showError("No ha seleccionado ninguna pista");
+                }
 
             } catch (Exception ex) {
                 showError(ex.getMessage());
