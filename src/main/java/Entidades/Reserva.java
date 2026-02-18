@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
-@Table(name = "reservas", schema = "club_dama")
+@Table(name = "reservas")
 public class Reserva {
     @Id
     @Column(name = "id_reserva", nullable = false, length = 36)
@@ -15,7 +15,7 @@ public class Reserva {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_socio", nullable = false)
-    private Entidades.Socio idSocio;
+    private Socio idSocio;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_pista", nullable = false)
@@ -33,6 +33,20 @@ public class Reserva {
     @Column(name = "precio", nullable = false, precision = 8, scale = 2)
     private BigDecimal precio;
 
+    public Reserva(String idReserva, Socio idSocio, Pista idPista, LocalDate fecha, LocalTime horaInicio, Integer duracionMin, BigDecimal precio) {
+        this.idReserva = idReserva;
+        this.idSocio = idSocio;
+        this.idPista = idPista;
+        this.fecha = fecha;
+        this.horaInicio = horaInicio;
+        this.duracionMin = duracionMin;
+        this.precio = precio;
+    }
+
+    public Reserva() {
+
+    }
+
     public String getIdReserva() {
         return idReserva;
     }
@@ -41,11 +55,11 @@ public class Reserva {
         this.idReserva = idReserva;
     }
 
-    public Entidades.Socio getIdSocio() {
+    public Socio getIdSocio() {
         return idSocio;
     }
 
-    public void setIdSocio(Entidades.Socio idSocio) {
+    public void setIdSocio(Socio idSocio) {
         this.idSocio = idSocio;
     }
 

@@ -1,29 +1,42 @@
 package Vista.views;
 
-import servicio.ClubDeportivo;
-import modelo.*;
+import jakarta.persistence.PersistenceException;
+import Servicio.ClubService;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
-import java.util.function.Consumer;
+import java.sql.SQLException;
 
 public class BajaSocioView extends GridPane {
-    public BajaSocioView(ClubDeportivo club) {
+    public BajaSocioView(ClubService club) throws SQLException {
         setPadding(new Insets(12));
         setHgap(8); setVgap(8);
 
-        ComboBox<Socio> id = new ComboBox<>();
+        ComboBox<String> id = new ComboBox<>();
         Button baja = new Button("Dar de baja");
+
+        //llamada al metodo del modelo para cargar los socios en el combobox
+        id.getItems().addAll(club.cargarSociosComboBox());
 
         addRow(0, new Label("Socio"), id);
         add(baja, 1, 1);
 
         baja.setOnAction(e -> {
-        //LLamar al método del modelo para dar de baja  a un socio.
+            try {
+                if (club.darDeBajaASocio(id.getValue()).equals("Baja validada")) {
+                    showInfo("Socio dado de baja con éxito");
+                } else if (club.darDeBajaASocio(id.getValue()).equals("Socio con reservas activas")) {
+                    showError("El socio no se ha podido dar de baja. Comprueba que no está asignado a ninguna reserva");
+                } else if (club.darDeBajaASocio(id.getValue()).equals("Socio no seleccionado")) {
+                    showError("No ha seleccionado ningún socio");
+                }
+
+            } catch (PersistenceException ex) {
+                showError("Error al dar de baja al socio de la base de datos");
+            }
         });
     }
-
     private void showError(String msg) {
         Alert a = new Alert(Alert.AlertType.ERROR, msg, ButtonType.OK);
         a.setHeaderText("Error");
@@ -35,3 +48,4 @@ public class BajaSocioView extends GridPane {
         a.showAndWait();
     }
 }
+

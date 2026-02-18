@@ -1,45 +1,75 @@
 package Entidades;
 
 import jakarta.persistence.*;
+import Servicio.DeporteConverter;
 import org.hibernate.annotations.ColumnDefault;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 @Entity
-@Table(name = "pistas", schema = "club_dama")
+@Table(name = "pistas")
 public class Pista {
     @Id
     @Column(name = "id_pista", nullable = false, length = 36)
     private String idPista;
 
-    @Lob
+
+    public enum Deporte {
+
+        FUTBOL_SALA("fútbol sala"),
+        TENIS("tenis"),
+        PADEL("pádel");
+
+        private final String deporte;
+
+        Deporte(String deporte) {
+            this.deporte = deporte;
+        }
+
+        public String getDeporte() {
+            return deporte;
+        }
+
+        @Override
+        public String toString() {
+            return deporte; //
+        }
+
+    }
+
+    @Convert(converter = DeporteConverter.class)
     @Column(name = "deporte", nullable = false)
-    private String deporte;
+    private Deporte deporte;
 
     @Column(name = "descripcion", length = 200)
     private String descripcion;
 
     @ColumnDefault("1")
     @Column(name = "disponible", nullable = false)
-    private Boolean disponible = false;
-
-    @OneToMany(mappedBy = "idPista")
-    private Set<Entidades.Reserva> reservas = new LinkedHashSet<>();
+    private Boolean disponible;
 
     public String getIdPista() {
         return idPista;
+    }
+
+    public Pista(String idPista, Deporte deporte, String descripcion, Boolean disponible) {
+        this.idPista = idPista;
+        this.deporte = deporte;
+        this.descripcion = descripcion;
+        this.disponible = disponible;
+    }
+
+    public Pista() {
+
     }
 
     public void setIdPista(String idPista) {
         this.idPista = idPista;
     }
 
-    public String getDeporte() {
+    public Deporte getDeporte() {
         return deporte;
     }
 
-    public void setDeporte(String deporte) {
+    public void setDeporte(Deporte deporte) {
         this.deporte = deporte;
     }
 
@@ -57,14 +87,6 @@ public class Pista {
 
     public void setDisponible(Boolean disponible) {
         this.disponible = disponible;
-    }
-
-    public Set<Entidades.Reserva> getReservas() {
-        return reservas;
-    }
-
-    public void setReservas(Set<Entidades.Reserva> reservas) {
-        this.reservas = reservas;
     }
 
 }

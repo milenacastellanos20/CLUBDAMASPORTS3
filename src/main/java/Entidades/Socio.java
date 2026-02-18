@@ -1,12 +1,12 @@
 package Entidades;
 
-import jakarta.persistence.*;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "socios", schema = "club_dama")
+@Table(name = "socios")
 public class Socio {
     @Id
     @Column(name = "id_socio", nullable = false, length = 36)
@@ -27,8 +27,18 @@ public class Socio {
     @Column(name = "email", length = 120)
     private String email;
 
-    @OneToMany(mappedBy = "idSocio")
-    private Set<Reserva> reservas = new LinkedHashSet<>();
+    public Socio(String idSocio, String dni, String nombre, String apellidos, String telefono, String email) {
+        this.idSocio = idSocio;
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.telefono = telefono;
+        this.email = email;
+    }
+
+    public Socio() {
+
+    }
 
     public String getIdSocio() {
         return idSocio;
@@ -76,14 +86,6 @@ public class Socio {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Set<Reserva> getReservas() {
-        return reservas;
-    }
-
-    public void setReservas(Set<Reserva> reservas) {
-        this.reservas = reservas;
     }
 
 }
