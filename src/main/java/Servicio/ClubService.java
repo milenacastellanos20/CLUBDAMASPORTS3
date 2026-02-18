@@ -19,4 +19,6 @@ public class ClubService {
         emf = Persistence.createEntityManagerFactory("club_damaPU");
     }
 
+
+
 }
