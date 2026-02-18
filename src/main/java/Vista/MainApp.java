@@ -2,7 +2,7 @@ package Vista;
 
 import Entidades.*;
 import Servicio.ClubService;
-import vista.views.*;
+import Vista.views.*;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -22,15 +22,11 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage)  {
-        try {
-            club = new ClubDeportivo();
 
-            club.cargarSocios();
-            club.cargarPistas();
-            club.cargarReservas();
-        } catch (SQLException e) {
-            showError("Error de conexion" + e.getMessage());
-        }
+        club = new ClubService();
+
+
+
         root = new BorderPane();
         root.setTop(buildMenuBar());
         status = new Label("Listo");
