@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_0.xsd"
+             version="3.0">
+    <persistence-unit name="club_damaPU" transaction-type="RESOURCE_LOCAL">
+        <!-- Registra tu entidad -->
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>Entidades.Pista</class>
+        <class>Entidades.Reserva</class>
+        <class>Entidades.Socio</class>
+
+        <properties>
+            <!-- Datos de conexión a MariaDB -->
+            <property name="jakarta.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:mariadb://localhost:3307/club_dama"/>
+            <property name="jakarta.persistence.jdbc.user" value="root"/>
+            <property name="jakarta.persistence.jdbc.password" value="alumnoDAM"/>
+
+            <!-- Dialecto para MariaDB -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect"/>
+
+            <!-- Como ya tienes las tablas creadas, mejor validate -->
+            <property name="hibernate.hbm2ddl.auto" value="validate"/>
+
+            <!-- Para ver el SQL en la consola -->
+            <property name="hibernate.show_sql" value="false"/>
+            <property name="hibernate.format_sql" value="false"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>
